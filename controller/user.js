@@ -26,7 +26,51 @@ const register = async (req, res, next) => {
     res.json(error);
   }
 };
+//login//
+const login = async (req, res) => {
+  if (!req.body.email || !req.body.password)
+    return res.json('both email and password required');
+  try {
+    const user = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', req.body.email);
+    // console.log(user.data[0].id);
+    // return res.status(200).json(user.data[0]);
+    if (!(user.data[0])) {
+      console.log(user.data[0]);
+      return res.status(404).json('no user found');
+    }
+    const isPasswordCorrect = await bcrypt.compare(
+      req.body.password,
+      user.data[0].password
+    );
+    if (!isPasswordCorrect) {
+      return res.json('incorrect password');
+    }
+    const payload = {
+      id: user.data[0].id,
+      name: user.data[0].name,
+    };
 
+    const token = jwt.sign(payload, process.env.JWT_TOKEN, {
+      expiresIn: '1d',
+    });
+    return res
+      .cookie('access_token', token, { httpOnly: true })
+      .status(200)
+      .json({
+        success: 1,
+        message: 'login successfully',
+        token: token,
+      });
+  } catch (e) {
+    console.log(e);
+    return res.json(e);
+  }
+};
+
+//to get all the user
 const getAllusesrs = async (req, res, next) => {
   try {
     const { data, error } = await supabase.from('users').select('*');
@@ -40,4 +84,5 @@ const getAllusesrs = async (req, res, next) => {
 module.exports = {
   getAllusesrs,
   register,
+  login,
 };
