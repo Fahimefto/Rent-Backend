@@ -12,9 +12,7 @@ const port = process.env.PORT;
 //route
 app.use("/user", user);
 
-app.get("/", (req, res) => {
-  res.json({ message: "Server Running" });
-});
+
 
 app.listen(port, (err) => {
   if (err) {
