@@ -12,7 +12,7 @@ const checkAuth = (req, res, next) => {
       return res.json('invalid token');
     }
     req.user = decoded;
-    console.log(req.user);
+    console.log(req.user );
     return next();
   });
 };

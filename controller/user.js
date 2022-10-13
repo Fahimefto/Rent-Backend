@@ -54,7 +54,7 @@ const login = async (req, res) => {
       expiresIn: '1d',
     });
     return res
-      .cookie('access_token', token, { httpOnly:true  })
+      .cookie('access_token', token, { httpOnly: true })
       .status(200)
       .json({
         message: 'login successfully',
@@ -77,11 +77,39 @@ const getAllusesrs = async (req, res, next) => {
   }
 };
 
+//get current user
+const getCurrentUser = async (req, res) => {
+  try {
+    const user = await supabase.from('users').select('*').eq('id', req.user.id);
+    console.log(user.body[0]);
+    return res.status(200).json(user.body[0]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 //logout
 const logout = (req, res) => {
   res.clearCookie('access_token');
   res.clearCookie('age');
   return res.status(200).json({ message: 'logout successful' });
+};
+//update user
+const updateUser = async (req, res, next) => {
+  try {
+    const user = await supabase
+      .from('users')
+      .update({ name: req.body.name, email: req.body.email })
+      .eq('id', req.user.id)
+      .select();
+    console.log(user.body[0]);
+    return res.status(200).json({
+      message: 'updated successfully',
+      data: user.body[0],
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = {
@@ -89,4 +117,6 @@ module.exports = {
   register,
   login,
   logout,
+  getCurrentUser,
+  updateUser,
 };
