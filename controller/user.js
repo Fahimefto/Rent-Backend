@@ -16,8 +16,11 @@ const register = async (req, res, next) => {
       email: req.body.email,
       password: hashedPassword,
     });
-
-    return res.status(201).json('new user created successfully');
+    if (error) {
+      return res.status(401).json('email taken');
+    } else {
+      return res.status(201).json('new user created successfully');
+    }
   } catch (error) {
     res.json(error);
   }
@@ -91,7 +94,6 @@ const getCurrentUser = async (req, res) => {
 //logout
 const logout = (req, res) => {
   res.clearCookie('access_token');
-  res.clearCookie('age');
   return res.status(200).json({ message: 'logout successful' });
 };
 //update user
