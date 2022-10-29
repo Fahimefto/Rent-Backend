@@ -6,7 +6,8 @@ const createPost = async (req, res, next) => {
     !req.body.area ||
     !req.body.description ||
     !req.body.title ||
-    !req.body.contact
+    !req.body.contact 
+    //!req.user.id
   ) {
     return res.json('fill all the fields');
   }
@@ -18,6 +19,11 @@ const createPost = async (req, res, next) => {
       title: req.body.title,
       contact: req.body.contact,
       user_id: req.user.id,
+      image: req.body.image,
+      district: req.body.district,
+      division: req.body.division,
+      upazila: req.body.upazila,
+      postal_code: req.body.postal_code,
     });
     if (error) {
       return res.status(401).json(error);
@@ -51,7 +57,25 @@ const getPostById = async (req, res) => {
     console.log(error);
   }
 };
-const getPostByDivision = (req, res) => {};
-const getPostByDistrict = (req, res) => {};
-const getPostByUpazila = (req, res) => {};
-module.exports = { createPost, getAllPosts, getPostById };
+const getPostByUserId = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const { data, error } = await supabase
+      .from('post')
+      .select('*')
+      .eq('user_id', id);
+    console.log(data);
+    return res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = {
+  createPost,
+  getAllPosts,
+  getPostById,
+  getPostByUserId,
+  
+};
