@@ -8,10 +8,12 @@ const {
   getAllPosts,
   getPostById,
   getPostByUserId,
+  getPostByAddress,
 } = require('../controller/post');
 
 router.route('/new').post(checkAuth, createPost);
 router.route('/all').get(checkAuth, getAllPosts);
 router.route('/:id').get(checkAuth, getPostById);
 router.route('/user/:id').get(getPostByUserId);
+router.route('/byaddress').post(getPostByAddress);
 module.exports = router;

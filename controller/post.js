@@ -6,7 +6,7 @@ const createPost = async (req, res, next) => {
     !req.body.area ||
     !req.body.description ||
     !req.body.title ||
-    !req.body.contact 
+    !req.body.contact
     //!req.user.id
   ) {
     return res.json('fill all the fields');
@@ -71,11 +71,30 @@ const getPostByUserId = async (req, res) => {
     console.log(error);
   }
 };
+const getPostByAddress = async (req, res) => {
+  try {
+    
+    const { upazila } = req.body;
+    console.log(upazila);
+    const { data, error } = await supabase
+      .from('post')
+      .select('*')
+      .eq('upazila', upazila);
+    console.log(data);
+    if (error) {
+      return res.status(401).json(error);
+    } else {
+      return res.status(201).json(data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   getPostByUserId,
-  
+  getPostByAddress,
 };
