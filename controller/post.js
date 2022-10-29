@@ -3,8 +3,8 @@ const supabase = require('../db');
 const createPost = async (req, res, next) => {
   if (
     !req.body.date ||
-    !req.body.address ||
-    !req.body.discription ||
+    !req.body.area ||
+    !req.body.description ||
     !req.body.title ||
     !req.body.contact
   ) {
@@ -13,8 +13,8 @@ const createPost = async (req, res, next) => {
   try {
     const { data, error } = await supabase.from('post').insert({
       date: req.body.date,
-      address: req.body.address,
-      discription: req.body.discription,
+      area: req.body.area,
+      description: req.body.description,
       title: req.body.title,
       contact: req.body.contact,
       user_id: req.user.id,
@@ -38,4 +38,20 @@ const getAllPosts = async (req, res, next) => {
     console.log(error);
   }
 };
-module.exports = { createPost, getAllPosts };
+const getPostById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { data, error } = await supabase
+      .from('post')
+      .select('*')
+      .eq('id', id);
+    console.log(data);
+    return res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+const getPostByDivision = (req, res) => {};
+const getPostByDistrict = (req, res) => {};
+const getPostByUpazila = (req, res) => {};
+module.exports = { createPost, getAllPosts, getPostById };
