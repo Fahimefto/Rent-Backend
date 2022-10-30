@@ -101,7 +101,6 @@ const updatePost = async (req, res, next) => {
         description: req.body.description,
         title: req.body.title,
         contact: req.body.contact,
-        user_id: req.user.id,
         image: req.body.image,
         district: req.body.district,
         division: req.body.division,
