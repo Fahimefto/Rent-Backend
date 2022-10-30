@@ -10,6 +10,7 @@ const {
   getPostByUserId,
   getPostByAddress,
   updatePost,
+  deletePost,
 } = require('../controller/post');
 
 router.route('/new').post(checkAuth, createPost);
@@ -18,4 +19,5 @@ router.route('/:id').get(checkAuth, getPostById);
 router.route('/user/:id').get(getPostByUserId);
 router.route('/byaddress').post(getPostByAddress);
 router.route('/update/:id').put(checkAuth, updatePost);
+router.route('/delete/:id').delete( deletePost);
 module.exports = router;

@@ -73,7 +73,6 @@ const getPostByUserId = async (req, res) => {
 };
 const getPostByAddress = async (req, res) => {
   try {
-    
     const { upazila } = req.body;
     console.log(upazila);
     const { data, error } = await supabase
@@ -118,6 +117,24 @@ const updatePost = async (req, res, next) => {
     console.log(error);
   }
 };
+const deletePost = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const { data, error } = await supabase.from('post').delete().eq('id', id);
+    console.log(data);
+    if (!data[0]) {
+      return res.json({
+        message: 'post not found',
+      });
+    }
+    return res.status(200).json({
+      message: 'deleted successfully',
+      data: data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = {
   createPost,
@@ -126,4 +143,5 @@ module.exports = {
   getPostByUserId,
   getPostByAddress,
   updatePost,
+  deletePost,
 };
