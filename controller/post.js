@@ -90,6 +90,35 @@ const getPostByAddress = async (req, res) => {
     console.log(error);
   }
 };
+const updatePost = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const post = await supabase
+      .from('post')
+      .update({
+        date: req.body.date,
+        area: req.body.area,
+        description: req.body.description,
+        title: req.body.title,
+        contact: req.body.contact,
+        user_id: req.user.id,
+        image: req.body.image,
+        district: req.body.district,
+        division: req.body.division,
+        upazila: req.body.upazila,
+        postal_code: req.body.postal_code,
+      })
+      .eq('id', id)
+      .select();
+    console.log(post.body[0]);
+    return res.status(200).json({
+      message: 'updated successfully',
+      data: post.body[0],
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = {
   createPost,
@@ -97,4 +126,5 @@ module.exports = {
   getPostById,
   getPostByUserId,
   getPostByAddress,
+  updatePost,
 };
