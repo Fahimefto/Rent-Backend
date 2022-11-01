@@ -113,8 +113,26 @@ const updateUser = async (req, res, next) => {
     console.log(error);
   }
 };
+const verifyUser=(req,res)=>{
+  const token = req.cookies.access_token;
+  if (!token) {
+    return res.status(200).json({
+      status: 401,
+      message: 'unauthorized access',
+    });
+  }
+  return jwt.verify(token, process.env.JWT_TOKEN, (err, decoded) => {
+    if (err) {
+      return res.json('invalid token');
+    }
+    req.user = decoded;
+    console.log(req.user );
+    return res.json(req.user);
+  });
+}
 
 module.exports = {
+  verifyUser,
   getAllusesrs,
   register,
   login,
