@@ -12,6 +12,11 @@ const createPost = async (req, res, next) => {
     return res.json('fill all the fields');
   }
   try {
+    const imageArr = [
+      { img: 'gyjhghgh' },
+      { img: 'gyjhghgh' },
+      { img2: 'gyjhghgh' },
+    ];
     const { data, error } = await supabase.from('post').insert({
       date: req.body.date,
       area: req.body.area,
@@ -19,7 +24,7 @@ const createPost = async (req, res, next) => {
       title: req.body.title,
       contact: req.body.contact,
       user_id: req.user.id,
-      image: req.body.image,
+      image: imageArr,
       district: req.body.district,
       division: req.body.division,
       upazila: req.body.upazila,
