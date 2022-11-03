@@ -7,16 +7,18 @@ const {
   getAllPosts,
   getPostById,
   getPostByUserId,
-  getPostByAddress,
+  getPostByUpazila,
+  getPostByDistrict,
   updatePost,
   deletePost,
-} = require("../controller/post");
+} = require('../controller/post');
 
 router.route("/new").post(checkAuth, createPost);
 router.route("/all").get(getAllPosts);
 router.route("/:id").get(checkAuth, getPostById);
 router.route("/user/:id").get(getPostByUserId);
-router.route("/byaddress").post(getPostByAddress);
+router.route('/byupazila').post(getPostByUpazila);
+router.route('/bydistrict').post(getPostByDistrict);
 router.route("/update/:id").put(checkAuth, updatePost);
 router.route("/delete/:id").delete(deletePost);
 module.exports = router;
