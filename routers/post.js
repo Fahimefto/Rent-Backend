@@ -9,6 +9,7 @@ const {
   getPostByUserId,
   getPostByUpazila,
   getPostByDistrict,
+  getPostByDivision,
   updatePost,
   deletePost,
 } = require('../controller/post');
@@ -19,6 +20,7 @@ router.route("/:id").get(checkAuth, getPostById);
 router.route("/user/:id").get(getPostByUserId);
 router.route('/byupazila').post(getPostByUpazila);
 router.route('/bydistrict').post(getPostByDistrict);
+router.route('/bydivision').post(getPostByDivision);
 router.route("/update/:id").put(checkAuth, updatePost);
 router.route("/delete/:id").delete(deletePost);
 module.exports = router;

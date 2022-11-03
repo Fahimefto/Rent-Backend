@@ -114,6 +114,25 @@ const getPostByDistrict = async (req, res) => {
   }
 };
 
+const getPostByDivision = async (req, res) => {
+  try {
+    const { division } = req.body;
+    console.log(division);
+    const { data, error } = await supabase
+      .from('post')
+      .select('*')
+      .eq('division', division);
+    console.log(data);
+    if (error) {
+      return res.status(401).json(error);
+    } else {
+      return res.status(201).json(data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const updatePost = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -170,4 +189,5 @@ module.exports = {
   updatePost,
   deletePost,
   getPostByDistrict,
+  getPostByDivision,
 };
