@@ -57,7 +57,10 @@ const login = async (req, res) => {
       expiresIn: "1d",
     });
     return res
-      .cookie("access_token", token, { httpOnly: true })
+      .cookie("access_token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      })
       .status(200)
       .json({
         message: "login successfully",
@@ -94,6 +97,7 @@ const getCurrentUser = async (req, res) => {
 //logout
 const logout = (req, res) => {
   res.clearCookie("access_token");
+
   return res.status(200).json({ message: "logout successful" });
 };
 //update user
