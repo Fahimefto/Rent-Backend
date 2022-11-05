@@ -90,7 +90,7 @@ const getPostByUserId = async (req, res) => {
     console.log(error);
   }
 };
-const getPostByAddress = async (req, res) => {
+const getPostByUpazila = async (req, res) => {
   try {
     const { upazila } = req.body;
     console.log(upazila);
@@ -109,6 +109,45 @@ const getPostByAddress = async (req, res) => {
     console.log(error);
   }
 };
+
+const getPostByDistrict = async (req, res) => {
+  try {
+    const { district } = req.body;
+    console.log(district);
+    const { data, error } = await supabase
+      .from('post')
+      .select('*')
+      .eq('district', district);
+    console.log(data);
+    if (error) {
+      return res.status(401).json(error);
+    } else {
+      return res.status(201).json(data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getPostByDivision = async (req, res) => {
+  try {
+    const { division } = req.body;
+    console.log(division);
+    const { data, error } = await supabase
+      .from('post')
+      .select('*')
+      .eq('division', division);
+    console.log(data);
+    if (error) {
+      return res.status(401).json(error);
+    } else {
+      return res.status(201).json(data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const updatePost = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -161,7 +200,9 @@ module.exports = {
   getAllPosts,
   getPostById,
   getPostByUserId,
-  getPostByAddress,
+  getPostByUpazila,
   updatePost,
   deletePost,
+  getPostByDistrict,
+  getPostByDivision,
 };
