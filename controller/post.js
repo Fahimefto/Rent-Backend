@@ -155,12 +155,12 @@ const updatePost = async (req, res, next) => {
     const post = await supabase
       .from("post")
       .update({
-        date: req.body.date,
         area: req.body.area,
         description: req.body.description,
         title: req.body.title,
         contact: req.body.contact,
-        image: req.body.image,
+        room: req.body.room,
+        fees: req.body.fees,
         district: req.body.district,
         division: req.body.division,
         upazila: req.body.upazila,
