@@ -103,10 +103,16 @@ const logout = (req, res) => {
 //update user
 const updateUser = async (req, res, next) => {
   try {
+     const salt = await bcrypt.genSalt(10);
+     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const user = await supabase
-      .from("users")
-      .update({ name: req.body.name, email: req.body.email })
-      .eq("id", req.user.id)
+      .from('users')
+      .update({
+        name: req.body.name,
+        email: req.body.email,
+        password: hashedPassword,
+      })
+      .eq('id', req.user.id)
       .select();
     console.log(user.body[0]);
     return res.status(200).json({
