@@ -1,34 +1,44 @@
-const supabase = require('../db');
+const supabase = require("../db");
+const moment = require("moment");
 
 const createPost = async (req, res, next) => {
   if (
-    !req.body.date ||
     !req.body.area ||
     !req.body.description ||
     !req.body.title ||
     !req.body.contact
-    //!req.user.id
   ) {
-    return res.json('fill all the fields');
+    return res.json("fill all the fields");
   }
   try {
     const imageArr = [
-      { img: 'gyjhghgh' },
-      { img: 'gyjhghgh' },
-      { img2: 'gyjhghgh' },
+      {
+        img: "https://res.cloudinary.com/dtcjz5osi/image/upload/v1667557151/rent/undraw_Personal_info_re_ur1n_1_cswr9i.png",
+      },
+      {
+        img: "https://res.cloudinary.com/dtcjz5osi/image/upload/v1667577159/rent/undraw_Insert_re_s97w_yxe3hw.png",
+      },
+      {
+        img2: "https://res.cloudinary.com/dtcjz5osi/image/upload/v1667508022/rent/undraw_Select_house_re_s1j9_kbmbhv.png",
+      },
     ];
-    const { data, error } = await supabase.from('post').insert({
-      date: req.body.date,
+
+    const date = moment().format();
+
+    const { data, error } = await supabase.from("post").insert({
+      date: date,
       area: req.body.area,
       description: req.body.description,
+      user_id: req.body.user_id,
       title: req.body.title,
       contact: req.body.contact,
-      user_id: req.user.id,
       image: imageArr,
       district: req.body.district,
       division: req.body.division,
       upazila: req.body.upazila,
       postal_code: req.body.postal_code,
+      room: req.body.room,
+      fees: req.body.fees,
     });
     if (error) {
       return res.status(401).json(error);
@@ -42,7 +52,10 @@ const createPost = async (req, res, next) => {
 
 const getAllPosts = async (req, res, next) => {
   try {
-    const { data, error } = await supabase.from('post').select('*');
+    const { data, error } = await supabase
+      .from("post")
+      .select("*")
+      .order("id", { ascending: false });
     console.log(data);
     return res.status(200).json(data);
   } catch (error) {
@@ -53,9 +66,9 @@ const getPostById = async (req, res) => {
   try {
     const id = req.params.id;
     const { data, error } = await supabase
-      .from('post')
-      .select('*')
-      .eq('id', id);
+      .from("post")
+      .select("*")
+      .eq("id", id);
     console.log(data);
     return res.status(200).json(data);
   } catch (error) {
@@ -67,9 +80,10 @@ const getPostByUserId = async (req, res) => {
     const id = req.params.id;
 
     const { data, error } = await supabase
-      .from('post')
-      .select('*')
-      .eq('user_id', id);
+      .from("post")
+      .select("*")
+      .eq("user_id", id)
+      .order("id", { ascending: false });
     console.log(data);
     return res.status(200).json(data);
   } catch (error) {
@@ -81,9 +95,10 @@ const getPostByAddress = async (req, res) => {
     const { upazila } = req.body;
     console.log(upazila);
     const { data, error } = await supabase
-      .from('post')
-      .select('*')
-      .eq('upazila', upazila);
+      .from("post")
+      .select("*")
+      .eq("upazila", upazila)
+      .order("id", { ascending: false });
     console.log(data);
     if (error) {
       return res.status(401).json(error);
@@ -98,7 +113,7 @@ const updatePost = async (req, res, next) => {
   try {
     const id = req.params.id;
     const post = await supabase
-      .from('post')
+      .from("post")
       .update({
         date: req.body.date,
         area: req.body.area,
@@ -111,11 +126,11 @@ const updatePost = async (req, res, next) => {
         upazila: req.body.upazila,
         postal_code: req.body.postal_code,
       })
-      .eq('id', id)
+      .eq("id", id)
       .select();
     console.log(post.body[0]);
     return res.status(200).json({
-      message: 'updated successfully',
+      message: "updated successfully",
       data: post.body[0],
     });
   } catch (error) {
@@ -125,15 +140,15 @@ const updatePost = async (req, res, next) => {
 const deletePost = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const { data, error } = await supabase.from('post').delete().eq('id', id);
+    const { data, error } = await supabase.from("post").delete().eq("id", id);
     console.log(data);
     if (!data[0]) {
       return res.json({
-        message: 'post not found',
+        message: "post not found",
       });
     }
     return res.status(200).json({
-      message: 'deleted successfully',
+      message: "deleted successfully",
       data: data,
     });
   } catch (error) {
