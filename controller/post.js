@@ -6,7 +6,8 @@ const createPost = async (req, res, next) => {
     !req.body.area ||
     !req.body.description ||
     !req.body.title ||
-    !req.body.contact
+    !req.body.contact ||
+    !req.body.upazila
   ) {
     return res.json("fill all the fields");
   }
@@ -115,9 +116,9 @@ const getPostByDistrict = async (req, res) => {
     const { district } = req.body;
     console.log(district);
     const { data, error } = await supabase
-      .from('post')
-      .select('*')
-      .eq('district', district);
+      .from("post")
+      .select("*")
+      .eq("district", district);
     console.log(data);
     if (error) {
       return res.status(401).json(error);
@@ -134,9 +135,9 @@ const getPostByDivision = async (req, res) => {
     const { division } = req.body;
     console.log(division);
     const { data, error } = await supabase
-      .from('post')
-      .select('*')
-      .eq('division', division);
+      .from("post")
+      .select("*")
+      .eq("division", division);
     console.log(data);
     if (error) {
       return res.status(401).json(error);
