@@ -1,5 +1,7 @@
 const supabase = require("../db");
 const moment = require("moment");
+const cloudinary = require("../util/cloudinary");
+const uploader = require("../controller/upload");
 
 const createPost = async (req, res, next) => {
   if (
@@ -12,19 +14,9 @@ const createPost = async (req, res, next) => {
     return res.json("fill all the fields");
   }
   try {
-    const imageArr = [
-      {
-        img: "https://res.cloudinary.com/dtcjz5osi/image/upload/v1667557151/rent/undraw_Personal_info_re_ur1n_1_cswr9i.png",
-      },
-      {
-        img: "https://res.cloudinary.com/dtcjz5osi/image/upload/v1667557151/rent/undraw_Personal_info_re_ur1n_1_cswr9i.png",
-      },
-      {
-        img2: "https://res.cloudinary.com/dtcjz5osi/image/upload/v1667508022/rent/undraw_Select_house_re_s1j9_kbmbhv.png",
-      },
-    ];
-
+    const imageArr = await uploader.getUpload(req, res);
     const date = moment().format();
+    console.log(imageArr);
 
     const { data, error } = await supabase.from("post").insert({
       date: date,
