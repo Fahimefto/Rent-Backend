@@ -1,6 +1,6 @@
 const supabase = require("../db");
 const moment = require("moment");
-const cloudinary = require("../util/cloudinary");
+
 const uploader = require("../controller/upload");
 
 const createPost = async (req, res, next) => {
@@ -143,8 +143,10 @@ const getPostByDivision = async (req, res) => {
 
 const updatePost = async (req, res, next) => {
   try {
+    const imageArr = await uploader.getUpload(req, res);
+    console.log(imageArr);
     const id = req.params.id;
-    const post = await supabase
+    const { data, error } = await supabase
       .from("post")
       .update({
         area: req.body.area,
@@ -157,13 +159,14 @@ const updatePost = async (req, res, next) => {
         division: req.body.division,
         upazila: req.body.upazila,
         postal_code: req.body.postal_code,
+        image: imageArr,
       })
       .eq("id", id)
-      .select();
-    console.log(post.body[0]);
+      .select("*");
+    console.log(data);
     return res.status(200).json({
       message: "updated successfully",
-      data: post.body[0],
+      data: data,
     });
   } catch (error) {
     console.log(error);
