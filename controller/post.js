@@ -17,7 +17,7 @@ const createPost = async (req, res, next) => {
         img: "https://res.cloudinary.com/dtcjz5osi/image/upload/v1667557151/rent/undraw_Personal_info_re_ur1n_1_cswr9i.png",
       },
       {
-        img: "https://res.cloudinary.com/dtcjz5osi/image/upload/v1667577159/rent/undraw_Insert_re_s97w_yxe3hw.png",
+        img: "https://res.cloudinary.com/dtcjz5osi/image/upload/v1667557151/rent/undraw_Personal_info_re_ur1n_1_cswr9i.png",
       },
       {
         img2: "https://res.cloudinary.com/dtcjz5osi/image/upload/v1667508022/rent/undraw_Select_house_re_s1j9_kbmbhv.png",
