@@ -27,6 +27,9 @@ const register = async (req, res, next) => {
 };
 //login//
 const login = async (req, res) => {
+  if (req.cookies.access_token) {
+    return res.json('Already logged in');
+  }
   if (!req.body.email || !req.body.password)
     return res.json('both email and password required');
   try {
